@@ -1,0 +1,15 @@
+Create aar file in Android Studio
+
+Retrieve exported .aar file from local builds
+http://stackoverflow.com/questions/24309950/create-aar-file-in-android-studio
+apply plugin: 'com.android.library'
+
+If you have a module defined as an android library project you'll get .aar files for all build flavors (debug and release by default) in the build/outputs/aar/ directory of that project.
+your-library-project
+    |- build
+        |- outputs
+            |- aar
+                |- appframework-debug.aar
+                 - appframework-release.aar
+If these files don't exist start a build with
+gradlew assemble
