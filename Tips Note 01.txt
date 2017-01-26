@@ -1,4 +1,4 @@
-Create aar file in Android Studio
+001) Create aar file in Android Studio
 
 Retrieve exported .aar file from local builds
 http://stackoverflow.com/questions/24309950/create-aar-file-in-android-studio
@@ -13,3 +13,41 @@ your-library-project
                  - appframework-release.aar
 If these files don't exist start a build with
 gradlew assemble
+
+
+002) How to export JAR library with its documentation?
+
+How to export JAR library with its documentation?
+http://stackoverflow.com/questions/36181814/how-to-export-aar-library-with-its-documentation
+
+apply plugin: 'com.android.library'
+
+
+You'll then need to run it separately whenever you want to create/update the source JAR:
+
+Gradle -> Tasks -> Other -> sourcesJar
+
+And probably there's some way to automate the task to be part of the assembleRelease task but I'm not very much familiar with Gradle yet.
+The source JAR will appear in the ...\MyLibrary\app\build\libs\ path.
+
+:::>
+The main problem after you build the sources jar is you cannot use this jar as your dependencies. This is only a source code that can't be used for writing code, i.e. you can't import anything, because the jar contains *.java files instead of *.class files. So that, do the following:
+
+Step #1 Build an AAR format for your library. Usually, it located in [project]/[library-module]/build/outputs/aar/library-release.aar
+
+Step #2 Add the AAR file as module. Go to File > New > New module... > Import .JAR/.AAR package > Next. Then, locate the AAR file and click Finish.
+
+Step #3 Go to Project Structure by clicking this icon icon project structure, and add the module we just made to app's dependencies.
+
+Step #4 Add @MarkusKauppinen's gradle task to library module's build.gradle and sync the project with gradle.
+
+Step #5 Go to right pane of Android Studio > click Gradle > refresh gradle task by clicking this icon icon refresh gradle task.
+
+Step #6 Find and run (by double click) sourcesJar in :library-module > Tasks > other.
+
+Step #7 After the task is completed, you'll find the sources jar in
+library-module\build\libs\..-sources.jar.
+
+Step #8 Import at least one class to app's module, e.g. in MainActivity. Then, press Ctrl + click on the class. Click Choose sources and browse the sources jar as mentioned in step #7. browse sources jar
+
+Finally, you can see the sources code with its documentation.
