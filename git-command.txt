@@ -1,0 +1,8 @@
+https://github.com/rzrasel/Android-Utility-Class.git
+
+git remote add origin https://github.com/rzrasel/Android-Utility-Class.git
+
+git remote set-url origin https://github.com/rzrasel/Android-Utility-Class.git
+git remote -v
+
+git remote show -n origin
