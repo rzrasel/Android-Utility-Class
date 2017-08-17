@@ -47,13 +47,37 @@ public class WindowOne extends javax.swing.JFrame {
         getContentPane().add(sysScrollPanel);
         //sysTblOne.setModel(model);
         initComponents();
-        
-        
+
         Object[] row = {"Id", "Name", "Value"};
         DefaultTableModel modelTwo = (DefaultTableModel) sysTblOne.getModel();
         modelTwo.addRow(row);
+
+        /*sysTblOne.setDragEnabled(true);
+        sysTblOne.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        sysTblOne.setDropMode(DropMode.INSERT_ROWS);
+        sysTblOne.setTransferHandler(new TransferHandler() {
+        });*/
+        TransferHandler handler = new TableRowTransferHandler();
+        /*sysTblOne.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        sysTblOne.setTransferHandler(handler);
+        sysTblOne.setDropMode(DropMode.INSERT_ROWS);
+        sysTblOne.setDragEnabled(true);
+        sysTblOne.setFillsViewportHeight(true);
         
+        sysTblTwo.setTransferHandler(handler);*/
         
+        sysTblOne.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        sysTblOne.setTransferHandler(handler);
+        sysTblOne.setDropMode(DropMode.INSERT_ROWS);
+        sysTblOne.setDragEnabled(true);
+        sysTblOne.setFillsViewportHeight(true);
+        
+        sysTblTwo.getSelectionModel().setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        sysTblTwo.setTransferHandler(handler);
+        sysTblTwo.setDropMode(DropMode.INSERT_ROWS);
+        sysTblTwo.setDragEnabled(true);
+        sysTblTwo.setFillsViewportHeight(true);
+
         /*sysTblOne = new JTable(new DefaultTableModel());
         String ColsName[] = {"Id", "Name", "Value"};
         DefaultTableModel model = new DefaultTableModel(null, ColsName);
@@ -103,6 +127,9 @@ public class WindowOne extends javax.swing.JFrame {
         sysTxtOne = new javax.swing.JTextField();
         sysScrollPanel = new javax.swing.JScrollPane();
         sysTblOne = new javax.swing.JTable();
+        sysScrollPanel1 = new javax.swing.JScrollPane();
+        sysTblTwo = new javax.swing.JTable();
+        button1 = new java.awt.Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -131,6 +158,26 @@ public class WindowOne extends javax.swing.JFrame {
         });
         sysScrollPanel.setViewportView(sysTblOne);
 
+        sysTblTwo.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "ID", "Name", "Value"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        sysScrollPanel1.setViewportView(sysTblTwo);
+
+        button1.setLabel("button1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -139,25 +186,33 @@ public class WindowOne extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(sysBtnOne)
-                        .addGap(0, 274, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(sysScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(sysScrollPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(sysTxtOne))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(sysTxtOne)
-                            .addComponent(sysScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
-                .addContainerGap())
+                        .addComponent(sysBtnOne)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(button1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(139, 139, 139))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(sysBtnOne)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(sysBtnOne)
+                    .addComponent(button1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(sysTxtOne, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(sysScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(sysScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(sysScrollPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -180,7 +235,6 @@ public class WindowOne extends javax.swing.JFrame {
         list.add("Value-1");
         modelTwo.addRow(list.toArray());
         sysTblOne.setModel(modelTwo);*/
-        
         List<String> list = new ArrayList<String>();
         list.add("1");
         list.add("Name-1");
@@ -225,9 +279,12 @@ public class WindowOne extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private java.awt.Button button1;
     private javax.swing.JButton sysBtnOne;
     private javax.swing.JScrollPane sysScrollPanel;
+    private javax.swing.JScrollPane sysScrollPanel1;
     private javax.swing.JTable sysTblOne;
+    private javax.swing.JTable sysTblTwo;
     private javax.swing.JTextField sysTxtOne;
     // End of variables declaration//GEN-END:variables
 }
