@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/act_dashboard"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/idAppBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="true"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/sysToolBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:clipToPadding="true">
+
+            <!--<ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="end"
+                android:adjustViewBounds="true"
+                android:padding="10dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/logo_tbmm" />-->
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/sysDrawerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- The main content view -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/idLineLayToolBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"></LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/sysFrameContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/idLineLayToolBar"
+                android:layout_marginTop="?attr/actionBarSize" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/sysIdDrawerContainer"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="left|start"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:background="#ffffff"
+            android:fitsSystemWindows="true">
+
+            <ListView
+                android:id="@+id/sysDrawerList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:background="#00ffffff"
+                android:choiceMode="singleChoice"
+                android:divider="#e5e5e5"
+                android:dividerHeight="1dp" />
+        </RelativeLayout>
+    </android.support.v4.widget.DrawerLayout>
+</RelativeLayout>
