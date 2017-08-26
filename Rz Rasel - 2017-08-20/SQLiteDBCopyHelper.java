@@ -2,6 +2,7 @@ package com.library;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Arrays;
 
 /**
  * Created by Rz Rasel on 2017-04-18.
@@ -52,13 +54,41 @@ public class SQLiteDBCopyHelper extends SQLiteOpenHelper {
         }
         System.out.println(" ASSETS_DATABASE_PATH: " + ASSETS_DATABASE_PATH);
         System.out.println("SYSTEM_DATABASE_PATH: " + SYS_DATABASE_PATH);
+        /*try {
+            //Arrays.asList(context.getResources().getAssets().list("")).contains(‌​"myFile");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+        if (!isAssetFileExists(context, ASSETS_DATABASE_PATH)) {
+            System.out.println("File not exists: " + ASSETS_DATABASE_PATH);
+            return;
+        }
         try {
             onCreateSysDatabase();
-
         } catch (IOException ioe) {
-
             throw new Error("Unable to create database");
         }
+    }
+
+    private boolean isAssetFileExists(Context argContext, String argFielPathInAssetsDir) {
+        boolean retVal = false;
+        AssetManager assetManager = argContext.getResources().getAssets();
+        InputStream inputStream = null;
+        try {
+            inputStream = assetManager.open(argFielPathInAssetsDir);
+            if (null != inputStream) {
+                retVal = true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return retVal;
     }
 
     private void onCreateSysDatabase() throws IOException {
@@ -136,6 +166,7 @@ public class SQLiteDBCopyHelper extends SQLiteOpenHelper {
 
     public boolean onInsert(String argTableName, ContentValues argContentValues) {
         long result = sqLiteDatabase.insert(argTableName, null, argContentValues);
+        //sqLiteDatabase.insert(argTableName, null, argContentValues);
         if (result == -1)
             return false;
         else
@@ -146,13 +177,22 @@ public class SQLiteDBCopyHelper extends SQLiteOpenHelper {
         //sqLiteDatabase.update(TABLE_NAME, contentValues, "ID = ?", new String[]{id});
         //id = idValue AND name = nameValue
         //NAME + " = ? AND " + LASTNAME + " = ?", new String[]{"Manas", "Bajaj"}
-        sqLiteDatabase.update(argTableName, argContentValues, argWhereClause, null);
+        if (argWhereClause.isEmpty()) {
+            sqLiteDatabase.update(argTableName, argContentValues, null, null);
+        } else {
+            sqLiteDatabase.update(argTableName, argContentValues, argWhereClause, null);
+        }
         return true;
     }
 
-    public Integer onDelete(String argTableName, String argWhereClause) {
+    public void onDelete(String argTableName, String argWhereClause) {
         //KEY_DATE + "='date' AND " + KEY_GRADE + "='style2' AND " + KEY_STYLE + "='style'"
-        return sqLiteDatabase.delete(argTableName, argWhereClause, null);
+        if (argWhereClause.isEmpty()) {
+            sqLiteDatabase.delete(argTableName, null, null);
+        } else {
+            sqLiteDatabase.delete(argTableName, argWhereClause, null);
+        }
+        //return sqLiteDatabase.delete(argTableName, argWhereClause, null);
     }
 
     public Cursor getSqlQueryResults(String argSqlQuery) {
@@ -189,7 +229,7 @@ if (sqLiteDBCopyHelper != null) {
     sqLiteDBCopyHelper.onInsertData("tbl_draft_message", contentValues);
     sqlQuery = " SELECT * FROM tbl_draft_message ORDER BY tdm_subject ";
     Cursor cursor;
-    cursor = sqLiteDBCopyHelper.getSqlQuery(sqlQuery);
+    cursor = sqLiteDBCopyHelper.getSqlQueryResults(sqlQuery);
     cursor.moveToFirst();
     while (cursor.moveToNext()) {
         String msgSubject = cursor.getString(cursor.getColumnIndex("tdm_subject"));
